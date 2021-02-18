@@ -83,44 +83,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-// function QAPopup(props){
-//   console.log(props);
-//   const [open, setOpen] = React.useState(false);
-
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   return (
-//   <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-//         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-//           Modal title
-//         </DialogTitle>
-//         <DialogContent dividers>
-//           <Typography gutterBottom>
-//             Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-//             in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-//             lacus vel augue laoreet rutrum faucibus dolor auctor.
-//           </Typography>
-//           <Typography gutterBottom>
-//             Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-//             scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-//             auctor fringilla.
-//           </Typography>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button autoFocus onClick={handleClose} color="primary">
-//             Save changes
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//   );
-// }
-
+// Function to create table component which use data of questions to show scroll infinite
 function Table({ columns, data, update }) {
   // Use the state and functions returned from useTable to build your UI
   const [modalShow, setModalShow] = React.useState(false);
@@ -191,7 +154,7 @@ function Table({ columns, data, update }) {
             console.log(row);
             prepareRow(row);
             return (<>
-              <tr id={rows[currentIndex].original.title} {...row.getRowProps()} onClick={()=> handleClickOpen(i)}>
+              <tr id={rows[currentIndex].values.title} {...row.getRowProps()} onClick={()=> handleClickOpen(i)}>
                 {row.cells.map(cell => {
                   return (
                     <>
@@ -206,16 +169,17 @@ function Table({ columns, data, update }) {
               </DialogTitle>
               <DialogContent dividers>
                 <Typography gutterBottom>
-                <b>Author:</b> {rows[currentIndex].original.owner.display_name}
+                  
+                <b>Author:</b> {rows[currentIndex].values.author}
                 </Typography>
                 <Typography gutterBottom>
-                <b>On</b> : {new Date(rows[currentIndex].original.creation_date*1000).toISOString().split('T')[0]} 
+                <b>On</b> : {rows[currentIndex].values.date ? rows[currentIndex].values.date: ''} 
                 </Typography>
                 <Typography gutterBottom>
                   <b>Score</b>: {rows[currentIndex].original.score} 
                 </Typography>
                 <Typography gutterBottom>
-                <b>Total views:</b> {rows[currentIndex].original.view_count} 
+                <b>Total views:</b> {rows[currentIndex].original.views} 
                 </Typography>
                 <Typography gutterBottom>
                 <b>Link to answer:</b> <a href={rows[currentIndex].original.link}> {rows[currentIndex].original.link}</a>
@@ -224,7 +188,7 @@ function Table({ columns, data, update }) {
               </DialogContent>
               <DialogActions>
                 <Button autoFocus onClick={handleClose} color="primary">
-                  Save changes
+                  OK
                 </Button>
               </DialogActions>
               </Dialog>
@@ -245,9 +209,27 @@ function Table({ columns, data, update }) {
     fetch('https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site=stackoverflow')
     .then((response)=> response.json())
     .then((resp)=>{
-        console.log(resp.items);
-        setItems(resp.items, 10);
-    })
+        // console.log('ITEMS prepared'makeData(resp.items, 10));
+        console.log("*******@@@@@@@@@@@@@@@@@@@@@@@",resp.items)
+        let all_questions=[]
+        for(let i =0 ; i<resp.items.length ; i++)
+        {
+        let obj = {
+          title:resp.items[i].title,
+          author:resp.items[i].owner.display_name,
+          date:new Date(resp.items[i].creation_date*1000).toISOString().split('T')[0],
+            isAnswered  : resp.items[i].is_answered,
+            score: resp.items[i].score,
+            views: resp.items[i].view_count,
+            tags: resp.items[i].tags,
+        link: resp.items[i].link
+        }
+        all_questions.push(obj)
+      }
+      console.log('My all question===== ', all_questions);
+        setItems(all_questions);
+        // setItems(makeData(resp.items, 10));
+      })
   }, []);
   
 
@@ -272,7 +254,7 @@ function Table({ columns, data, update }) {
 
   const fetchMoreData = () => {
     setTimeout(() => {
-      setItems(items.concat(makeData(items, 5)));
+      setItems(items.concat(makeData(items, 2)));
     }, 1500);
   };
 

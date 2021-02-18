@@ -9,10 +9,11 @@ const range = len => {
 };
 
 const newPerson = (d) => {
+  console.log("!!!!!!!!!!new person ddddddddddddd",d)
   return {
     title:   d.title,
-    author:  d.owner.display_name,
-    date: new Date(d.creation_date*1000).toISOString().split('T')[0],
+    author:  d.author,
+    date: d.date,
     body: {
         isAnswered  : d.is_answered,
         score: d.score,
@@ -30,15 +31,14 @@ export default function makeData(list, ...lens) {
     range(len).map((i) => {
         if(list[i] !== undefined){
             const person = newPerson(list[i]);
-            if(person.author != undefined){
                 items.push({
-                    ...newPerson(list[i]),
+                    ...person,
                     subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
             })
-            }
       };
       return 0;
     });
+    console.log('ITEMS PREPARED ====', items, range(len));
     return items;
   };
 
