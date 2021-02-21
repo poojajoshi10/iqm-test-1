@@ -22,6 +22,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import makeData from "./makeData";
 
+const NO_CONTENT='No content to show';
 const Styles = styled.div`
   padding: 1rem;
 
@@ -237,13 +238,17 @@ const [link, setLink] = React.useState('');
  function App() {
   const [items, setItems] =  useState([]);
   const [question, setQuestions] = React.useState([]);
-  const [endItemIndex, setEndItemIndex] = React.useState(0);
+  const [errorMsg, setErrorMsg] = React.useState('');
 
 
   useEffect(()=>{
     fetch('https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site=stackoverflow')
     .then((response)=> response.json())
     .then((resp)=>{
+        if( !resp || !resp.items){
+            resp.items = [];
+            setErrorMsg(NO_CONTENT);
+        }
         let all_questions=[]
         for(let i =0 ; i<resp.items.length ; i++)
         {
@@ -286,7 +291,6 @@ const [link, setLink] = React.useState('');
   );
 
   const fetchMoreData = () => {
-    console.log('Updating data ....');
     setTimeout(() => {
       setItems(makeData(question, items.length + 2));
     }, 1500);
@@ -298,6 +302,7 @@ const [link, setLink] = React.useState('');
     <>
     <Styles>
       <CustomTable key="custom-table" columns={columns} data={data} update={fetchMoreData}  stopLoader={question.length <= items.length}/>
+      <p>{errorMsg}</p>
     </Styles>
   </>
   );
