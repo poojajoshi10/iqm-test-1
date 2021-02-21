@@ -6,7 +6,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
-import {Modal, Button} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 import InfiniteScroll from "react-infinite-scroll-component";
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -201,7 +201,7 @@ const [link, setLink] = React.useState('');
       </Table>
       </TableContainer>
 
-      <Dialog key='popup-model' onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog key='popup-model' onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         <b>{title}</b>
         </DialogTitle>

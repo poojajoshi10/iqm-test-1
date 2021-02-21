@@ -38,7 +38,6 @@ export default function makeData(list, ...lens) {
       };
       return 0;
     });
-    console.log('ITEMS PREPARED ====', items, range(len));
     return items;
   };
 
