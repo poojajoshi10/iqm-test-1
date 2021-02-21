@@ -1,10 +1,22 @@
 .App {
   text-align: center;
+  max-height: 1vh !important;
+}
+
+body{
+  max-height: 10px !important;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+#root{
+  overflow-y: scroll;
+  height:100px;
+  width: 100%;
+  display:block;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -14,7 +26,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #d5d7db;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
