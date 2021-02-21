@@ -9,7 +9,6 @@ const range = len => {
 };
 
 const newPerson = (d) => {
-  console.log("!!!!!!!!!!new person ddddddddddddd",d)
   return {
     title:   d.title,
     author:  d.author,

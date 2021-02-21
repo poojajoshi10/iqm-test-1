@@ -19,7 +19,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Card from '@material-ui/core/Card';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
 import makeData from "./makeData";
 
 const NO_CONTENT='No content to show';
@@ -129,14 +128,12 @@ const [link, setLink] = React.useState('');
 
 
   React.useEffect(() => {
-    console.log("sort");
   }, [sortBy]);
 
   const [open, setOpen] = React.useState(false);
   const [currentIndex, setIndex] = React.useState(0);
 
   const handleClickOpen = (index) => {
-    console.log(rows[index]);
     setOpen(true);
     setIndex(index || 0);
     setTitle(rows[index].original.title);
